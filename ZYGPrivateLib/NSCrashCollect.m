@@ -20,6 +20,8 @@ static SignalHandler previousPIPESignalHandler = NULL;
 static SignalHandler previousSEGVSignalHandler = NULL;
 static SignalHandler previousSYSSignalHandler = NULL;
 static SignalHandler previousTRAPSignalHandler = NULL;
+   
+
 
 @implementation NSCrashCollect
 
@@ -132,6 +134,7 @@ static void cachCrrash(NSException *exception) {
     NWSignalRegister(SIGTRAP);
 }
 
+//添加监听异常回调方法
 static void NWSignalRegister(int signal) {
     struct sigaction action;
     action.sa_sigaction = NWSignalHandler;
@@ -169,6 +172,7 @@ static void NWSignalHandler(int signal, siginfo_t* info, void* context) {
     
     kill(getpid(), SIGKILL);
 }
+
 
 #pragma mark -- 获取名字
 static NSString *signalName(int signal) {
@@ -251,5 +255,7 @@ static void NWClearSignalRegister() {
     signal(SIGPIPE,SIG_DFL);
     signal(SIGSYS,SIG_DFL);
 }
+
+
 
 @end
